@@ -1,3 +1,12 @@
+terraform {
+  cloud {
+    organization = "everyones-a-critic"
+    workspaces {
+      name = "ecr-repositories"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
