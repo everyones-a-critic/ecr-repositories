@@ -19,3 +19,27 @@ resource "aws_ecr_repository" "communities-service" {
     scan_on_push = false
   }
 }
+
+resource "aws_ecr_lifecycle_policy" "communities-service" {
+  repository = aws_ecr_repository.communities-service.id
+
+  policy = <<EOF
+{
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Keep last 5 images",
+            "selection": {
+                "tagStatus": "tagged",
+                "tagPrefixList": ["v"],
+                "countType": "imageCountMoreThan",
+                "countNumber": 5
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}
+EOF
+}
